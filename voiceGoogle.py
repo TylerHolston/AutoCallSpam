@@ -1,13 +1,16 @@
 from selenium import webdriver
 from time import sleep
+import os
 
 class GoogleVoice:
+
     def __init__(self, username, password):
         self.username = username
         self.password = password
+        self.currentDir = os.getcwd()
+        print(self.currentDir)
 
-        self.driver = webdriver.Chrome('./chromedriver')
-
+        self.driver = webdriver.Chrome(self.currentDir + '\chromedriver.exe')
         self.driver.get("https://voice.google.com/")
         self.login()
     
@@ -17,5 +20,5 @@ class GoogleVoice:
         self.driver.find_element_by_xpath('//*[@id="identifierNext"]/span/span').click()
         sleep(100)
 
-if __name__ == "__main__":
-    GoogleVoice("username","password")
+#if __name__ == "__main__":
+#    GoogleVoice("username","password")
