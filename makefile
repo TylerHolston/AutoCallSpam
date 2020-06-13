@@ -5,5 +5,5 @@ populate: runPhoneCall.sh autoNumber.py
 	python3 autoNumber.py
 .PHONY: clean
 clean:
-	rm -f CALLINFO.txt 
+	rm -f CALLINFO.txt message.mp3
 	make populate

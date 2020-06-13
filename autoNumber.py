@@ -7,7 +7,7 @@ from time import sleep
 from startCall import openFacetime
 from pynput.mouse import Button, Controller
 import tkinter as tk
-import threading, textToSpeech
+import threading, textToSpeech, subprocess
 
 CALLINFO_ERROR = "CALLINFO.txt isn't configured properly"
 CLICK_DELAY=1.5
@@ -49,7 +49,7 @@ class autoNumber:
     def autoInputMessage(self):
         openFacetime(self.targetNumber)
         sleep(2) #wait until call is answered and then slight delay ontop
-        textToSpeech(self.message)
+        #textToSpeech(self.message)
         
 def click():
     root = tk.Tk()
@@ -74,10 +74,16 @@ if __name__ == "__main__":
 
     sleep(2) #substantial delay to wait for faceTime opens
 
+    textToSpeech.textToSpeech(PhoneMessage)
     auto = autoNumber(PhoneString, PhoneMessage)
     call = threading.Thread(target=auto.autoInputMessage)
     click = threading.Thread(target=click)
-
+    
     click.start()
     call.start()
+    call.join(5)
+
+    sleep(5)
+    subprocess.Popen(["mpg123", "message.mp3"],
+                        stdout=subprocess.PIPE)
     

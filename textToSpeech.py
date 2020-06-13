@@ -11,7 +11,4 @@ class textToSpeech:
         myobj = gTTS(text=message, lang=self.language, slow=False) 
         # Saving the converted audio in a mp3 file
         myobj.save("message.mp3") 
-        
         # Playing the converted file 
-        subprocess.Popen(["mpg123", "message.mp3"],
-                        stdout=subprocess.PIPE)
