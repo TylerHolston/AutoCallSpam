@@ -47,10 +47,10 @@ class GoogleVoice:
             self.driver.find_element_by_xpath('//*[@id="passwordNext"]').click()
             element_present = EC.visibility_of_element_located((By.XPATH,'//*[@id="content"]'))
             WebDriverWait(self.driver,timeout=TIMEOUT_CONSTANT).until(element_present)
+            self.callManeuver()
         except TimeoutException:
             print(TIMEOUT_ERROR_GOOGLE)
-        finally:
-            self.callManeuver()
+            
     
     def callManeuver(self):
         try:
@@ -61,12 +61,20 @@ class GoogleVoice:
             element_present = EC.element_to_be_clickable((By.XPATH,'//*[@id="gvPageRoot"]/div[2]/div[2]/gv-call-sidebar/div/gv-in-call/ng-transclude/gv-make-call-panel/div/div[1]/button'))
             WebDriverWait(self.driver,timeout=TIMEOUT_CONSTANT).until(element_present)
             self.driver.find_element_by_xpath('//*[@id="gvPageRoot"]/div[2]/div[2]/gv-call-sidebar/div/gv-in-call/ng-transclude/gv-make-call-panel/div/div[1]/button').click()
+            self.monitorCall()
         except TimeoutException:
             print(TIMEOUT_ERROR_VOICE)
-        finally:
-            sleep(10)
-            self.playVoice()
-            sleep(50)
+            
+    def monitorCall(self):
+        element_present = EC.presence_of_element_located((By.XPATH,'//*[@id="gvPageRoot"]/div[2]/div[2]/gv-call-sidebar/div/gv-in-call/div/div/div[1]/div[1]/div[1]/span[1]'))
+        WebDriverWait(self.driver, timeout=TIMEOUT_CONSTANT).until(element_present)
+        sleep(2)
+        check=self.driver.find_element_by_xpath('//*[@id="gvPageRoot"]/div[2]/div[2]/gv-call-sidebar/div/gv-in-call/div/div/div[1]/div[1]/div[1]/span[1]').text
+        check = str(check).strip()
+        print(check)
+        while("Calling …" == check):
+            check=self.driver.find_element_by_xpath('//*[@id="gvPageRoot"]/div[2]/div[2]/gv-call-sidebar/div/gv-in-call/div/div/div[1]/div[1]/div[1]/span[1]').text
+        self.playVoice()
     
     def playVoice(self):
         textToSpeech(self.phoneMessage).play()

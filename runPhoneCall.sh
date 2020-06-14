@@ -15,7 +15,8 @@ PHONE_NUMBER_SUCCESS="Phone number saved... "
 MSG_SUCCESS="Message saved... "
 CONFIRMATION="Are you sure this is what you want your message to be? (Y/N)"
 INVALIDYorN="INVALID"
-INPUT_TWILIO_PHONE="Please enter the phone# linked with your personal twilio acc: "
+INPUT_EMAIL="Please enter your email address linked to your google voice account:"
+INPUT_EMAIL_PASSWD="Please enter your password linked to your google voice account:"
 
 MSG_CHAR_CAP=500
 PHONE_CHAR_CAP=12
@@ -93,6 +94,7 @@ function checkPhoneNumber {
 #    main
 function main {
     #check to make sure CALLINFO exists
+    rm -rf CALLINFO.txt message.mp3
     if ! [ -f  "${CALLINFO}" ]; then
         echo -n "File CALLINFO.txt does not exist. Making new..."
         touch "${CALLINFO}"
@@ -109,6 +111,13 @@ function main {
 
     #Prompt for user message    
     checkMessage
+
+    echo "THIS PART HAS NO ERROR HANDLING. IF YOU INPUT YOUR EMAIL AND PASSWORD WRONG THIS WILL FAIL"
+    read -p "${INPUT_EMAIL}" emailAddr
+    echo "${emailAddr}" >> "${CALLINFO}"
+    read -p "${INPUT_EMAIL_PASSWD}" emailPass
+    echo "${emailPass}" >> "${CALLINFO}"
+    $PWD/autoNumber.exe
 }
 
 #===============================================================
