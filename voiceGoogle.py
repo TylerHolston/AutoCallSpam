@@ -5,7 +5,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from time import sleep
-import os
+from os import getcwd
+from textToSpeech import textToSpeech
 
 TIMEOUT_ERROR_GOOGLE = "THERE HAS BEEN A TIMEOUT ERROR INSIDE GOOGLE SIGNUP. XPATH/NAME WAS NOT FOUND"
 TIMEOUT_ERROR_VOICE = "THERE HAS BEEN A TIMEOUT ERROR INSIDE GOOGLE VOICE. XPATH WAS NOT FOUND"
@@ -13,11 +14,12 @@ TIMEOUT_CONSTANT = 10
 
 class GoogleVoice:
 
-    def __init__(self, username, password, phoneNumber):
+    def __init__(self, username, password, phoneNumber, PhoneMessage):
         self.username = username
         self.password = password
         self.phoneNumber = phoneNumber
-        self.currentDir = os.getcwd()
+        self.phoneMessage = PhoneMessage
+        self.currentDir = getcwd()
 
         #Bypass some browser-related notification/mic access errors
         option = Options()
@@ -63,6 +65,8 @@ class GoogleVoice:
             print(TIMEOUT_ERROR_VOICE)
         finally:
             sleep(10)
-
-if __name__ == "__main__":
-    GoogleVoice("soccerback1","Emmadog99$$$","+17602674456")
+            self.playVoice()
+            sleep(50)
+    
+    def playVoice(self):
+        textToSpeech(self.phoneMessage).play()

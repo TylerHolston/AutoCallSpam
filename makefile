@@ -3,7 +3,6 @@ populate: runPhoneCall.sh autoNumber.py
 	./runPhoneCall.sh
 	@echo "AUTO STARTUP"
 	python3 autoNumber.py
-.PHONY: clean
 clean:
 	@rm -f CALLINFO.txt message.mp3
 	make populate
